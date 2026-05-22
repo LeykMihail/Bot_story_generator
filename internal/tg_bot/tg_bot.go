@@ -68,15 +68,16 @@ func NewBot(cfg *config.Config, logger *logger.Logger, router StoryRouter) (*Bot
 
 func (bot *Bot) StartBot() {
 	outbounds, edit, delete, invoiceChan, pdchan := bot.router.GetRouterChans()
+	bot.wg.Add(1)
+	go func() {
+		defer bot.wg.Done()
+		bot.readIncommingMessage()
+	}()
 	for i := 0; i < bot.numworkers; i++ {
-		bot.wg.Add(6)
+		bot.wg.Add(5)
 		go func() {
 			defer bot.wg.Done()
 			bot.sendOutboundMessage(outbounds[i])
-		}()
-		go func() {
-			defer bot.wg.Done()
-			bot.readIncommingMessage()
 		}()
 		go func() {
 			defer bot.wg.Done()

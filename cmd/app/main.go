@@ -12,6 +12,7 @@ import (
 	tgbot "bot_story_generator/internal/tg_bot"
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -27,10 +28,7 @@ func main() {
 	}
 	logger, err := logger.NewLogger(cfg)
 	if err != nil {
-		logger.ZapLogger.Debug("Failed to initialize logger",
-			zap.Error(err),
-		)
-		return
+		log.Fatalf("Failed to initialize logger: %v", err)
 	}
 	logger.ZapLogger.Debug("Successful init Logger")
 	defer logger.Sync()

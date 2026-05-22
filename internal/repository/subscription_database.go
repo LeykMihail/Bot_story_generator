@@ -125,12 +125,9 @@ func (s *SubscriptionDatabaseImpl) PayedPendingSubscription(ctx context.Context,
 }
 func (s *SubscriptionDatabaseImpl) RejectedPendingSubscription(ctx context.Context, payload string, userID int64) error {
 	query := `
-		UPDATE subscriptions 
-        SET 
-            status = 'rejected',
-        WHERE 
-            userID = $1 
-            AND payload = $2 
+		UPDATE subscriptions
+		SET status = 'rejected'
+		WHERE userID = $1 AND payload = $2
 	`
 	_, err := s.databaseclient.Pool.Exec(ctx, query, userID, payload)
 	if err != nil {
