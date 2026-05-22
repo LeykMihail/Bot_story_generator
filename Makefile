@@ -3,7 +3,6 @@ export
 .PHONY: all start tests stop run logs status
 
 all: start
-
 migrate-up:
 	migrate -path ./internal/schema -database "${DATABASE_CONNECT_URL}" up
 migrate-down:
@@ -13,7 +12,7 @@ tests:
 build:
 	docker build -t bot_story_generator .
 start:
-	docker run --name bot_story_generator-container bot_story_generator
+	docker run --rm --name bot_story_generator-container --env-file cfg.env bot_story_generator
 stop:
 	docker stop bot_story_generator
 run:

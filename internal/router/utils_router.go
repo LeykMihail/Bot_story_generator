@@ -5,9 +5,16 @@ import (
 	"context"
 )
 
+func outboundQueueIndex(userID int64, numWorkers int) int {
+	idx := int(userID % int64(numWorkers))
+	if idx < 0 {
+		idx += numWorkers
+	}
+	return idx
+}
+
 func (r *StoryRouterImpl) createOutboundMessage(ctx context.Context, userID int64, text string, butargs ...models.ButtonArg) {
-	idx := int(userID % int64(r.numworkers))
-	queue := r.chans_outbound[idx]
+	queue := r.chans_outbound[outboundQueueIndex(userID, r.numworkers)]
 	select {
 	case <-r.ctx.Done():
 		return

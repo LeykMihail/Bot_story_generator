@@ -14,5 +14,6 @@ FROM alpine:3.21
 WORKDIR /app
 
 COPY --from=builder /app/service .
+COPY --from=builder /app/promts ./promts
 
 CMD ["./service"]

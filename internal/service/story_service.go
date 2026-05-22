@@ -220,6 +220,10 @@ func (s *StoryServiceImpl) UserChoice(ctx context.Context, userID int64, num str
 				s.Logger.ZapLogger.Error("Unmarshal", zap.Error(err), zap.Any("userID", userID), zap.Any("traceID", trace.ID), zap.Any("place", place))
 				return nil, errors.New(text_messages.TextErrorCreateTask)
 			}
+			if number_choice > len(fantasyCharacters.Characters) {
+				s.Logger.ZapLogger.Warn("Choice out of range", zap.Int("choice", number_choice), zap.Int("max", len(fantasyCharacters.Characters)), zap.Any("userID", userID), zap.Any("traceID", trace.ID), zap.Any("place", place))
+				return nil, errors.New(text_messages.TextErrorInvalidChoice)
+			}
 			userVariant := fantasyCharacters.Characters[number_choice-1]
 			msg = text_messages.CreateHeroMessage(&userVariant)
 			msgInBD = msg
@@ -230,6 +234,10 @@ func (s *StoryServiceImpl) UserChoice(ctx context.Context, userID int64, num str
 			if err := json.Unmarshal(variant.Data, &choices); err != nil {
 				s.Logger.ZapLogger.Error("Unmarshal", zap.Error(err), zap.Any("userID", userID), zap.Any("traceID", trace.ID), zap.Any("place", place))
 				return nil, errors.New(text_messages.TextErrorCreateTask)
+			}
+			if number_choice > len(choices) {
+				s.Logger.ZapLogger.Warn("Choice out of range", zap.Int("choice", number_choice), zap.Int("max", len(choices)), zap.Any("userID", userID), zap.Any("traceID", trace.ID), zap.Any("place", place))
+				return nil, errors.New(text_messages.TextErrorInvalidChoice)
 			}
 			userVariant := models.Extension{Narrative: choices[number_choice-1]}
 			msg = text_messages.CreateExtensionMessage(&userVariant)

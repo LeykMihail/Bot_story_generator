@@ -1,2 +1,5 @@
-*.env
+cfg.env
+.env
 *.log
+.cursor
+bin/

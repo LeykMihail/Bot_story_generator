@@ -149,7 +149,13 @@ cd bot_story_generator
 
 #### 2. Configure application environment (`cfg.env`)
 
-Create a `cfg.env` file in the project root based on the example below (without secrets):
+Copy the example and fill in your secrets:
+
+```bash
+cp cfg.env.example cfg.env
+```
+
+Or create `cfg.env` manually based on the template below:
 
 ```cfg.env
 # Telegram Bot Configuration
@@ -200,7 +206,11 @@ ADMIN_IDS=your_telegram_user_id_here
 #### 3. Configure `.env` for migrations and Makefile
 
 The `Makefile` includes and exports variables from `.env` for running migrations.  
-Create a `.env` file in the project root, for example:
+```bash
+cp .env.example .env
+```
+
+The file must contain at least:
 
 ```env
 DATABASE_CONNECT_URL=postgresql://username:password@localhost:5432/dbname
